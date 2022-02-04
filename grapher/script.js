@@ -55,7 +55,7 @@ function renderCurveBetweenPorts(outx, outy, inx, iny) {
 	ctx.bezierCurveTo(cp1x, outy, cp2x, iny, inx, iny);
 	ctx.moveTo(outx,outy);
 	ctx.closePath();
-	ctx.lineWidth = 5;
+	ctx.lineWidth = 3;
 	ctx.stroke();
 }
 
@@ -263,7 +263,7 @@ window.onload = async function() {
 			for (const point of [wire.o, wire.i]) {
 				if (point instanceof Element) {
 					let rects = point.getClientRects()[0];
-					points.push(point == wire.i ? rects.left - remtopx(2) : rects.right + remtopx(1.5));
+					points.push(point == wire.i ? rects.left - remtopx(1.5) : rects.right + remtopx(1.1));
 					points.push((rects.top + rects.bottom) / 2);
 				} else {
 					points.push(point.x);

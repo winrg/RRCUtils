@@ -28,6 +28,7 @@ body {
 	"searcher graph";
 	grid-column-gap: 0;
 	grid-row-gap: 0;
+	--chip-scale: 1.5rem !important;
 }
 
 iframe#searcher {
