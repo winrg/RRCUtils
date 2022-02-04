@@ -175,8 +175,10 @@ window.addEventListener("load", async (e) => {
 				addBtn.setAttribute('title', 'Add to graph');
 				addBtn.onclick = getChipAddListener(el.GUID);
 				if (isNested) name.append(addBtn);
+				
+				let m = generateChipHTML(el.NodeDescs);
 
-				ret.append(depr, name, iret, generateChipHTML(el.NodeDescs));
+				ret.append(depr, name, iret, m);
 
 				return ret;
 			}

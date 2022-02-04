@@ -120,12 +120,20 @@ window.onload = async function() {
 			chipcontainer.append(generateChipHTML(v2data.Nodes[data.GUID].NodeDescs));
 			ne.append(chipcontainer);
 			graph.append(ne);
+			
+			let newchipx = -graphPos.x + (graph.getClientRects()[0].width  / 2) - (ne.getClientRects()[0].width  / 2);
+			let newchipy = -graphPos.y + (graph.getClientRects()[0].height / 2) - (ne.getClientRects()[0].height / 2);
+			ne.style.setProperty('--chipOffsetX', newchipx);
+			ne.style.setProperty('--chipOffsetY', newchipy);
+
+
 			const chip = {
 				el: ne,
 				typeInfo: types,
 				currentOverrides: [],
 				nd: v2data.Nodes[data.GUID].NodeDescs
 			};
+			
 			appendTypeUI(chip);
 			chips.push(chip);
 			console.log(types);
@@ -133,7 +141,7 @@ window.onload = async function() {
 	}
 
 	graph.addEventListener('mousedown', function(e) {
-		if (e.button == 0) {
+		if (e.buttons & 1) {
 			start = performance.now();
 			targ = e.target;
 			if (e.target.parentElement.matches('.input')) {
@@ -198,6 +206,11 @@ window.onload = async function() {
 	});
 
 	rootel.addEventListener("mousemove", e => {
+		if (e.buttons & 2) {
+			mode = '';
+			let tmp = connections.pop();
+			if ((tmp.i instanceof Element) && (tmp.o instanceof Element)) connections.push(tmp);
+		}
 		if (e.buttons & 4) {
 			graphPos.x += e.clientX - lastmp.x;
 			graphPos.y += e.clientY - lastmp.y;

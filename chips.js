@@ -74,8 +74,10 @@ function generateChipHTML(NodeDescs, typeoverride = undefined) {
 
 			output.append(port, tooltip);
 		}
+
 		return root;
 	}
+
 }
 
 function ListAllTypes(Nodes) {
