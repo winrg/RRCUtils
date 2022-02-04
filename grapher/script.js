@@ -178,22 +178,22 @@ window.onload = async function() {
 
 	rootel.addEventListener("mouseup", e => {
 		if (e.button == 0) {
+			let newCon;
 			switch (mode) {
 			case 'wire_i-o':
+				connections.pop()
+				newCon = {i: wirestate.i, o: e.target}
 				if (e.target.matches('.exec')) delConnections(e.target);
-				wirestate.o = e.target;
-				if (!e.target.parentElement.matches('.output'))
-					connections.pop();
-				else if (wirestate.i.nextElementSibling.innerText != wirestate.o.nextElementSibling.innerText)
-					connections.pop();
+				if (e.target.parentElement.matches('.output') && (newCon.i.nextElementSibling.innerText == newCon.o.nextElementSibling.innerText))
+					connections.push(newCon);
 				break;
 			case 'wire_o-i':
-				if (!e.target.matches('.exec')) delConnections(e.target);
-				wirestate.i = e.target;
-				if (!e.target.parentElement.matches('.input'))
-					connections.pop();
-				else if (wirestate.i.nextElementSibling.innerText != wirestate.o.nextElementSibling.innerText)
-					connections.pop();
+				connections.pop()
+				newCon = {o: wirestate.o, i: e.target}
+				if (!e.target.matches('.exec') && !e.target.matches('#graph')) delConnections(e.target);
+				if (e.target.parentElement.matches('.input') && (newCon.i.nextElementSibling.innerText == newCon.o.nextElementSibling.innerText))
+					connections.push(newCon);
+				break;
 				break;
 			case 'drag':
 				if ((performance.now() - start) < 150 && !targ.children[0].matches('#selected')) {
