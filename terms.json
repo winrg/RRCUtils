@@ -1,0 +1,78 @@
+{
+	"Creation Object":{
+		"term": "Creation Object",
+		"definition": "An Object Made Using Shapes And Tubes From The Makerpen"
+	},
+	"Rec Room Object": {
+		"term": "Rec Room Object",
+		"definition": "Something That Can Be Created/Spawned By The Maker Pen Tools"
+	},
+	"Item": {
+		"term": "Item",
+		"definition": "A Player-Made Object That Uses One Or More Objects To Serve A Purpose"
+	},
+	"Prop": {
+		"term": "Prop",
+		"definition": "An Object Found Under The Props Tab In The Maker Pen Menu That Has Been Pre-Made By Rec Room"
+	},
+	"Tool": {
+		"term": "Tool",
+		"definition": "An Object Used To Manipulate Other Objects"
+	},
+	"Entity": {
+		"term": "Entity",
+		"definition": "Anything That Exists In A Room"
+	},
+	"Client": {
+		"term": "Client",
+		"definition": "The Machine In Which A Player Is Running Rec Room On"
+	},
+	"Localized": {
+		"term": "Localized|Local|Unsynced",
+		"definition": "A Signal That Only Exists In The Executing Clients Instance"
+	},
+	"Synced": {
+		"term": "Synced",
+		"definition": "A Signal That Exists For All Clients In An Instance"
+	},
+	"Global": {
+		"term": "Global",
+		"definition": "The Status Of The World That Is The Same For All Players"
+	},
+	"To Sync": {
+		"term": "To Sync",
+		"definition": "To Transfer A Signal From A Clients Machine Into The Global Network"
+	},
+	"To Localize": {
+		"term": "To Localize",
+		"definition": "To Transfer A Signal From The Global Network Into Select Clients"
+	},
+	"Instance (Rec Room Wise)": {
+		"term": "Instance",
+		"definition": "An Instance (Real World Wise) of a Room Containing Players"
+	},
+	"Player": {
+		"term": "Player",
+		"definition": "The Ingame Character Of A Client"
+	},
+	"To Execute": {
+		"term": "To Execute",
+		"definition": "To Activate A Circuit"
+	},
+	"Signal": {
+		"term": "Signal",
+		"definition": "An Activation That Can Travel To And From Other Chips"
+	},
+	"Chip": {
+		"term": "Chip",
+		"definition": "A Function"
+	},
+	"Circuit": {
+		"term": "Circuit",
+		"definition": "A Group Of Chips That Execute A Specific Command"
+	},
+	"Target": {
+		"term": "Target",
+		"definition": "The Object or value affected by an operation"
+	}
+}

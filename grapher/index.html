@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+		<meta name="description" content="A simple utility to help you make CV2 graphs, out-of-game.">
+		<meta name="author" content="@✨Aleteoryx✨#1027">
+    <title>CV2 Node Graph Generator</title>
+    <link crossorigin href="style.css" rel="stylesheet" type="text/css" />
+    <link crossorigin href="/chips.css" rel="stylesheet" type="text/css" />
+
+    <link crossorigin href="/util.js" rel="preload" as="script"/>
+    <link crossorigin href="/chips.js" rel="preload" as="script"/>
+    <link crossorigin href="script.js" rel="preload" as="script"/>
+    <link crossorigin href="/chips.css" rel="preload" as="style"/>
+    <link crossorigin href="style.css" rel="preload" as="style"/>
+    <link crossorigin href="/circuitsv2.json" rel="preload" as="fetch"/>
+    <link crossorigin href="https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json" rel="preload" as="fetch"/>
+		
+		<script crossorigin src="/util.js"></script>
+		<script crossorigin src="/chips.js"></script>
+		<script crossorigin src="script.js"></script>
+    <noscript><style> #searcher, #graph, #canvas { display: none } </style></noscript>
+  </head>
+  <body>
+		<noscript>
+			The chip grapher requires JavaScript to function.
+			If you cannot enable it here, you can try using tyleo's
+			<a href="https://www.figma.com/community/file/1070759222767700948">
+				figma templates
+			</a>, although those also need javascript.4
+		</noscript>
+		<details id="searchbox" open>
+			<summary></summary>
+			<iframe id="searcher" src="/"></iframe>
+		</details>
+		<div id="graph">
+			
+		</div>
+		<canvas id="canvas"></canvas>
+		<details id="helpbox">
+			<summary>?</summary>
+			<div>
+				<!-- Unused tabbing system. Ignore.
+				<input type="radio" name="test" class="selecttab" checked/>
+				<p class="tab">text for button 1</p>
+				<input type="radio" name="test" class="selecttab"/>
+				<p class="tab">text for button 2</p>
+				<input type="radio" name="test" class="selecttab"/>
+				<p class="tab">text for button 3</p>
+				<input type="radio" name="test" class="selecttab"/>
+				<p class="tab">text for button 4</p>-->
+				<h2>The Basics</h2>
+				<hr/>
+				<p>The chip grapher is a simple program.
+					To get started, use the searcher sidebar to find a chip you want to add.
+					That sidebar is just an embedded version of the main searcher, and all
+					behavior is the same. To learn more, press the '?' button on the sidebar.
+					Once you've decided on a chip, press the '+' button next to it to add it
+					to the graph.</p>
+				<h3>Interacting with existing chips</h3>
+				<hr/>
+				<p>Chips suppport various operations.</p>
+				<h4>Wiring</h4>
+				<hr/>
+				<p>To wire 2 ports to one another, simply click and drag to a port of the same type.
+					 All input data ports have a maximum of one connection, as do output execs.
+					 To disconnect a wire, simply click on the end with a maxiumum of one connection.
+				</p>
+				<h4>Selecting</h4>
+				<hr>
+				<p>To select a chip, just click on it. If the threshold is too fast, shoot me a message on discord.</p>
+				<h4>Deleting</h4>
+				<hr>
+				<p>Once a chip is selected, press the <kbd>Delete</kbd> key to delete it.</p>
+				<h4>Type Selection</h4>
+				<hr>
+				<p>Some chips have a type union on a port. You can see this union by hovering over any white port.
+					 When a chip with a type union is selected, drop down menus will appear to set the actual type.
+					 Setting it will unwire all connections to the chip, so be sure to set it first thing!
+				</p>
+			</div>
+		</details>
+		
+  </body>
+</html>
