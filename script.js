@@ -10,14 +10,16 @@ const fusenameopts = {
 	minMatchCharLength: 1,
 	ignoreLocation: true,
 	threshold: 0,
-	keys: ["ReadonlyName"]
+	keys: ["ReadonlyName"],
+	includeScore: true
 };
 const fusedescopts = {
 	isCaseSensitive: false,
 	minMatchCharLength: 1,
 	ignoreLocation: true,
 	threshold: 0,
-	keys: ["Description"]
+	keys: ["Description"],
+	includeScore: true
 };
 
 function genExplanation(name) {
@@ -143,9 +145,12 @@ window.addEventListener("load", async (e) => {
 			fuse.setCollection(content2.nodes);
 		});
 		
-		var content = endOfPath ? fuseinuse.map(fuse => fuse.search(endOfPath).map(e => e.item)) : content2.nodes;
-		content = Array.from(new Set(content.flat()));
-		content.sort((a, b) => (a.ReadonlyName.toLowerCase() > b.ReadonlyName.toLowerCase()) ? 1 : -1);
+		var content = endOfPath ? (() => {
+			let m = fuseinuse.map(fuse => fuse.search(endOfPath)).flat()
+			m.sort((a,b) => a.score - b.score);
+			m = Array.from(new Set(m.map(e => e.item)));
+			return m;
+		})() : content2.nodes;
 		//console.log(content2.nodes)
 			
 		content = content.map(el => {

@@ -194,7 +194,6 @@ window.onload = async function() {
 				if (e.target.parentElement.matches('.input') && (newCon.i.nextElementSibling.innerText == newCon.o.nextElementSibling.innerText))
 					connections.push(newCon);
 				break;
-				break;
 			case 'drag':
 				if ((performance.now() - start) < 150 && !targ.children[0].matches('#selected')) {
 					switchID(targ.children[0], 'selected')
