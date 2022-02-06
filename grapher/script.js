@@ -221,7 +221,11 @@ function serializeGraph() {
 }
 
 function deserializeGraph(graph) {
+	for(const chip of chips) {
+		chip.el.remove();
+	}
 	chips.length = 0;
+	connections.length = 0
 	for (const chip of graph.chips) {
 		const newchip = newChip(chip.GUID);
 
@@ -258,6 +262,9 @@ function deserializeGraph(graph) {
 		});
 	}
 }
+function loadGraphHandler({graph}) {
+	deserializeGraph(graph);
+}
 
 var locked = false;
 
@@ -265,6 +272,22 @@ function lockGraph() {
 	locked = true;
 	document.getElementById('searchbox').remove();
 	document.getElementById('helpbox')  .remove();
+	document.getElementById('plbox')  .remove();
+}
+
+async function getPermalink() {
+	const linker = document.getElementById('linktarget');
+	const linkerp = document.getElementById('linkprefix');
+	const ab = document.getElementById('authorbox');
+
+	const ret = await fetch('https://graphpl.aleteoryx.me/save', {
+		method: 'POST',
+		body:   JSON.stringify({...serializeGraph(), author: ab.value ? ab.value : undefined})
+	}).then(m => m.text())
+	console.log(ret);
+	linkerp.innerText = "Success! Permalinked at:"
+	linker.href      = `https://cv2.aleteoryx.me/grapher/pl#${ret}`
+	linker.innerText = `https://cv2.aleteoryx.me/grapher/pl#${ret}`
 }
 
 window.onload = async function() {
@@ -450,4 +473,6 @@ window.onload = async function() {
 
 		requestAnimationFrame(updateanim);
 	})()
+
+	if(window.opener) opener.postMessage({type: 'grapherLoaded'});
 }

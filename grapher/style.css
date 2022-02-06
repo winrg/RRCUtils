@@ -169,6 +169,43 @@ canvas {
 	box-shadow: black 1mm 1mm 3mm
 }
 
+#plbox > summary::marker {
+	content:'';
+}
+#plbox > summary {
+	height: 3rem;
+	width: 3rem;
+	background: #0000;
+	color: #fff7;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+	user-select: none;
+}
+#plbox[open] > summary {
+	color: #fff;
+}
+
+#plbox {
+	position: fixed;
+	top: 2rem;
+	right: 2rem;
+	background: #0000;
+	border-radius: 0;
+	z-index: 100;
+}
+
+#plbox > div {
+	background: var(--foreground);
+	border-radius: 0.5cm;
+	width: 10cm;
+	padding: 1rem;
+	position: relative;
+	top: 4rem;
+	box-shadow: black 1mm 1mm 3mm
+}
+
 
 hr {
 	border: 0.5mm solid var(--foreforeground);
@@ -185,3 +222,27 @@ kbd {
   border-radius: 1mm;
   box-shadow: inset black -0.25mm -0.25mm 1mm;
 }
+
+.icon {
+	font-family: "Icons";
+	font-size: 2rem;
+	height: 2rem;
+	width:  2rem;
+}
+
+button, input {
+	color: white;
+	background: var(--background);
+	padding: 0.5rem;
+
+	border: none;
+	border-radius: 1rem;
+	font-size: 13pt;
+	margin: 0.5rem;
+}
+
+button:hover {
+	background: var(--foreforeground);
+}
+
+a {color: white;}

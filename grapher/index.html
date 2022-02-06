@@ -6,17 +6,19 @@
 		<meta name="description" content="A simple utility to help you make CV2 graphs, out-of-game.">
 		<meta name="author" content="@✨Aleteoryx✨#1027">
     <title>CV2 Node Graph Generator</title>
+		<link crossorigin href="/oi.css" rel="stylesheet" type="text/css">
     <link crossorigin href="style.css" rel="stylesheet" type="text/css" />
     <link crossorigin href="/chips.css" rel="stylesheet" type="text/css" />
 
     <link crossorigin href="/util.js" rel="preload" as="script"/>
     <link crossorigin href="/chips.js" rel="preload" as="script"/>
     <link crossorigin href="script.js" rel="preload" as="script"/>
+    <link crossorigin href="oi.css" rel="preload" as="style"/>
     <link crossorigin href="/chips.css" rel="preload" as="style"/>
     <link crossorigin href="style.css" rel="preload" as="style"/>
     <link crossorigin href="/circuitsv2.json" rel="preload" as="fetch"/>
     <link crossorigin href="https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json" rel="preload" as="fetch"/>
-		
+
 		<script crossorigin src="/util.js"></script>
 		<script crossorigin src="/chips.js"></script>
 		<script crossorigin src="script.js"></script>
@@ -28,16 +30,30 @@
 			If you cannot enable it here, you can try using tyleo's
 			<a href="https://www.figma.com/community/file/1070759222767700948">
 				figma templates
-			</a>, although those also need javascript.4
+			</a>, although those also need javascript.
 		</noscript>
 		<details id="searchbox" open>
 			<summary></summary>
 			<iframe id="searcher" src="/"></iframe>
 		</details>
 		<div id="graph">
-			
+
 		</div>
 		<canvas id="canvas"></canvas>
+		<details id="plbox">
+			<summary><span class="icon">&#xe086;</span></summary>
+			<div>
+				<h1>Permalinking Menu</h1>
+				<hr>
+				<p>Set your name below and click the button to get a permanent link to this graph.</p>
+				<label for="authorbox"><b>Author:</b></label>
+				<input id="authorbox" type="text">
+				<br>
+				<button onclick="getPermalink();">Get Link!</button>
+				<br>
+				<span id="linkprefix"></span><a id="linktarget"></a>
+			</div>
+		</details>
 		<details id="helpbox">
 			<summary>?</summary>
 			<div>
@@ -81,6 +97,6 @@
 				</p>
 			</div>
 		</details>
-		
+
   </body>
 </html>
