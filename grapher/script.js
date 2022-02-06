@@ -1,3 +1,39 @@
+/*
+Serialization format:
+
+{
+	"chips": [
+		{
+			"GUID": String,
+			"pos": {
+				"x":    Number,
+				"y":    Number
+			},
+			"to": {
+				<See the 'chip.currentOverrides' property>
+			}
+		}
+	],
+
+	"connections": [
+		{
+			"i": {
+				"chipidx": Number,
+				"portidx": Number
+			},
+
+			o: {
+				"chipidx": Number,
+				"portidx": Number
+			}
+		}
+	]
+}
+
+
+*/
+
+
 var v2data;
 var graph;
 var searcher;
@@ -8,8 +44,8 @@ const chips = [];
 /*
 [
 	{
-		i: func() -> {x:Number, y:Number} | <div>,
-		o: func() -> {x:Number, y:Number} | <div>
+		i: {x:Number, y:Number} | <div>,
+		o: {x:Number, y:Number} | <div>
 	}
 ]
 */
@@ -65,13 +101,14 @@ function appendTypeUI(chip) {
 	for(const key of Object.keys(chip.typeInfo)) {
 		data.push(`${key}: `);
 		let m = newEl('select', 'typeSelect');
+		m.classList.add(key);
 		m.addEventListener('change', e => {
 			if (e.target.value) chip.currentOverrides[key] = e.target.value;
 			else delete chip.currentOverrides[key]
 
-			delConnections(chip.el.children[0].children[0]);
-			chip.el.children[0].children[0].remove();
-			chip.el.children[0].prepend(generateChipHTML(chip.nd, chip.currentOverrides));
+			delConnections(chip.el.querySelector('.chip'));
+			chip.el.querySelector('.chip').remove();
+			chip.el.querySelector('.selUI').prepend(generateChipHTML(chip.nd, chip.currentOverrides));
 		});
 
 		for(const type of chip.typeInfo[key]) {
@@ -97,6 +134,139 @@ function delConnections(el) {
 	connections.push(...tmp);
 }
 
+function newChip(GUID) {
+	const types = {};
+	const typeParams = v2data.Nodes[GUID].NodeDescs[0].ReadonlyTypeParams;
+	for (const desc of Object.keys(typeParams))
+		types[desc] = [
+			`${desc}: ${typeParams[desc]}`,
+			...(typeParams[desc] == 'any' ? allTypes : typeParams[desc].match(/^\((.+)\)$/)[1].split(' | '))
+		];
+			
+	const ne = newEl('div', 'chipbox');
+	const chipcontainer = newEl('div', 'selUI');
+	chipcontainer.append(generateChipHTML(v2data.Nodes[GUID].NodeDescs));
+	ne.append(chipcontainer);
+	graph.append(ne);
+	
+	let newchipx = -graphPos.x + (graph.getClientRects()[0].width  / 2) - (ne.getClientRects()[0].width  / 2);
+	let newchipy = -graphPos.y + (graph.getClientRects()[0].height / 2) - (ne.getClientRects()[0].height / 2);
+	ne.style.setProperty('--chipOffsetX', newchipx);
+	ne.style.setProperty('--chipOffsetY', newchipy);
+
+	const chip = {
+		el: ne,
+		typeInfo: types,
+		currentOverrides: {},
+		nd: v2data.Nodes[GUID].NodeDescs,
+		GUID: GUID,
+	};
+	
+	appendTypeUI(chip);
+	chips.push(chip);
+
+	return chip;
+}
+function newChipHandler({GUID}) {
+	newChip(GUID);
+}
+
+function serializeGraph() {
+	const ret = {
+		chips: [],
+		connections: []
+	};
+
+	for (const chip of chips) {
+		let x = Number(chip.el.style.getPropertyValue('--chipOffsetX'));
+		let y = Number(chip.el.style.getPropertyValue('--chipOffsetY'));
+		
+		ret.chips.push({
+			GUID: chip.GUID,
+			pos: {
+				x: isNaN(x) ? 0 : x,
+				y: isNaN(y) ? 0 : y
+			},
+			to: chip.currentOverrides
+		})
+	}
+
+	for(const con of connections) {
+		if ((con.i instanceof Node) && (con.o instanceof Node)) {
+			const sCon = {
+				i: {
+					chipidx: -1,
+					portidx: -1
+				},
+
+				o: {
+					chipidx: -1,
+					portidx: -1
+				}
+			}
+			for (const key of Object.keys(chips)) {
+				if (chips[key].el.contains(con.i)) {
+					sCon.i.chipidx = Number(key);
+					sCon.i.portidx = Array.from(chips[key].el.querySelector('.input').children).indexOf(con.i) / 2
+				}
+				if (chips[key].el.contains(con.o)) {
+					sCon.o.chipidx = Number(key);
+					sCon.o.portidx = Array.from(chips[key].el.querySelector('.output').children).indexOf(con.o) / 2
+				}
+			}
+			ret.connections.push(sCon);
+		}
+	}
+	return ret;
+}
+
+function deserializeGraph(graph) {
+	chips.length = 0;
+	for (const chip of graph.chips) {
+		const newchip = newChip(chip.GUID);
+
+		newchip.el.style.setProperty('--chipOffsetX', chip.pos.x);
+		newchip.el.style.setProperty('--chipOffsetY', chip.pos.y);
+
+		newchip.currentOverrides = chip.to;
+
+		for (const ov of Object.entries(chip.to)) {
+			const selector = newchip.el.querySelector(`select.${ov[0]}`);
+			if (!selector) {console.warn(`unused type override in deserialization ${ov[0]}: ${ov[1]}`); continue;}
+			if (![...selector.options].map(opt => opt.value).includes(ov[1])) {console.warn(`invalid type override in deserialization ${ov[0]}: ${ov[1]}`); continue;}
+			selector.value = ov[1];
+		}
+
+		newchip.el.querySelector('.chip').remove();
+		newchip.el.querySelector('.selUI').prepend(generateChipHTML(newchip.nd, newchip.currentOverrides));
+	}
+
+	for (const con of graph.connections) {
+		const inputschip = chips[con.i.chipidx];
+		if(!inputschip) {console.warn(`invalid connection ${JSON.stringify(con)}`); continue;}
+		const input = inputschip.el.querySelector('.input').children[con.i.portidx * 2];
+		if(!input) {console.warn(`invalid connection ${JSON.stringify(con)}`); continue;}
+
+		const outputschip = chips[con.o.chipidx];
+		if(!outputschip) {console.warn(`invalid connection ${JSON.stringify(con)}`); continue;}
+		const output = outputschip.el.querySelector('.output').children[con.o.portidx * 2];
+		if(!output) {console.warn(`invalid connection ${JSON.stringify(con)}`); continue;}
+
+		connections.push({
+			i: input,
+			o: output
+		});
+	}
+}
+
+var locked = false;
+
+function lockGraph() {
+	locked = true;
+	document.getElementById('searchbox').remove();
+	document.getElementById('helpbox')  .remove();
+}
+
 window.onload = async function() {
 	graph = document.getElementById("graph");
 	searcher = document.getElementById("searcher");
@@ -106,42 +276,22 @@ window.onload = async function() {
 	allTypes.push(...ListAllTypes(v2data.Nodes).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1));
 
 	window.onmessage = function({data}) {
-		if (data.type == 'newChip') {
-			const types = {};
-			const typeParams = v2data.Nodes[data.GUID].NodeDescs[0].ReadonlyTypeParams;
-			for (const desc of Object.keys(typeParams))
-				types[desc] = [
-					`${desc}: ${typeParams[desc]}`,
-					...(typeParams[desc] == 'any' ? allTypes : typeParams[desc].match(/^\((.+)\)$/)[1].split(' | '))
-				];
-			
-			const ne = newEl('div', 'chipbox');
-			const chipcontainer = newEl('div', 'selUI');
-			chipcontainer.append(generateChipHTML(v2data.Nodes[data.GUID].NodeDescs));
-			ne.append(chipcontainer);
-			graph.append(ne);
-			
-			let newchipx = -graphPos.x + (graph.getClientRects()[0].width  / 2) - (ne.getClientRects()[0].width  / 2);
-			let newchipy = -graphPos.y + (graph.getClientRects()[0].height / 2) - (ne.getClientRects()[0].height / 2);
-			ne.style.setProperty('--chipOffsetX', newchipx);
-			ne.style.setProperty('--chipOffsetY', newchipy);
-
-
-			const chip = {
-				el: ne,
-				typeInfo: types,
-				currentOverrides: [],
-				nd: v2data.Nodes[data.GUID].NodeDescs
-			};
-			
-			appendTypeUI(chip);
-			chips.push(chip);
-			console.log(types);
+		switch(data.type) {
+		case 'newChip':
+			newChipHandler(data);
+			break;
+		case 'loadGraph':
+			loadGraphHandler(data);
+			break;
+		case 'lock':
+			lockGraph();
+			break;
 		}
+
 	}
 
 	graph.addEventListener('mousedown', function(e) {
-		if (e.buttons & 1) {
+		if ((e.buttons & 1) && !locked) {
 			start = performance.now();
 			targ = e.target;
 			if (e.target.parentElement.matches('.input')) {
@@ -177,7 +327,7 @@ window.onload = async function() {
 	});
 
 	rootel.addEventListener("mouseup", e => {
-		if (e.button == 0) {
+		if ((e.button == 0) && !locked) {
 			let newCon;
 			switch (mode) {
 			case 'wire_i-o':
@@ -195,7 +345,7 @@ window.onload = async function() {
 					connections.push(newCon);
 				break;
 			case 'drag':
-				if ((performance.now() - start) < 150 && !targ.children[0].matches('#selected')) {
+				if ((performance.now() - start) < 150 && !targ.querySelector('.selUI').matches('#selected')) {
 					switchID(targ.children[0], 'selected')
 				}
 				break;
@@ -250,6 +400,9 @@ window.onload = async function() {
 		switch (e.code) {
 		case 'Delete':
 			deleteSel();
+			break;
+		case 'KeyS':
+			console.log(serializeGraph());
 			break;
 		}
 	});

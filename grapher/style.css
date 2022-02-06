@@ -41,18 +41,18 @@ iframe#searcher {
 }
 
 div#graph {
+	width:100vw;
 	--graphOffsetX: 0;
 	--graphOffsetY: 0;
 	grid-area: graph;
-	width: calc(100vw - 13cm);
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAA3SURBVDhPY2RgYPgPxBQDZhEZMM0EJqkIRg2kHIwaSDkYNZByMGog5YARWNJSpcSGASq7kIEBAL94Aos8Ra5sAAAAAElFTkSuQmCC");
 	background-repeat: repeat;
 	background-position-x: calc(var(--graphOffsetX) * 1px);
 	background-position-y: calc(var(--graphOffsetY) * 1px);
 }
 
-#searchbox:not([open]) + div#graph {
-	width:100vw !important;
+#searchbox[open] + div#graph {
+	width: calc(100vw - 13cm);
 }
 
 #searchbox:not([open]) > summary::marker {
@@ -90,6 +90,7 @@ div#graph {
 }
 
 div.chipbox {
+	z-index: 100;
 	--chipOffsetX: 0;
 	--chipOffsetY: 0;
 	position: absolute;
@@ -117,7 +118,7 @@ canvas {
 	bottom:0;
 	left:0;
 	right:0;
-	z-index: 100;
+	z-index: 10;
 
 	pointer-events: none;
 }
@@ -153,6 +154,7 @@ canvas {
 	right: 2rem;
 	background: #0000;
 	border-radius: 0;
+	z-index: 100;
 }
 
 #helpbox > div {
