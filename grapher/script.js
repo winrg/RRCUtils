@@ -51,6 +51,7 @@ const chips = [];
 */
 const connections = [];
 
+var clean;
 var mode;
 var targ;
 var start;
@@ -299,6 +300,7 @@ window.onload = async function() {
 	allTypes.push(...ListAllTypes(v2data.Nodes).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1));
 
 	window.onmessage = function({data}) {
+		clean = false
 		switch(data.type) {
 		case 'newChip':
 			newChipHandler(data);
@@ -346,6 +348,7 @@ window.onload = async function() {
 				mode = 'drag';
 
 			else if (e.target == graph) switchID(null, 'selected')
+			clean = false
 		}
 	});
 
@@ -374,6 +377,7 @@ window.onload = async function() {
 				break;
 			}
 			mode = null;
+			clean = false
 		}
 	});
 
@@ -382,12 +386,14 @@ window.onload = async function() {
 			mode = '';
 			let tmp = connections.pop();
 			if ((tmp.i instanceof Element) && (tmp.o instanceof Element)) connections.push(tmp);
+			clean = false
 		}
 		if (e.buttons & 4) {
 			graphPos.x += e.clientX - lastmp.x;
 			graphPos.y += e.clientY - lastmp.y;
 			graph.style.setProperty('--graphOffsetX', graphPos.x);
 			graph.style.setProperty('--graphOffsetY', graphPos.y);
+			clean = false
 		}
 		switch (mode) {
 		case 'drag':
@@ -395,10 +401,13 @@ window.onload = async function() {
 			let newchipy = Number(targ.style.getPropertyValue('--chipOffsetY')) + e.clientY - lastmp.y;
 			targ.style.setProperty('--chipOffsetX', newchipx);
 			targ.style.setProperty('--chipOffsetY', newchipy);
+			clean = false
 			break;
 		}
 		lastmp.x = e.clientX;
 		lastmp.y = e.clientY;
+		if (mode) 
+			clean = false
 	});
 
 
@@ -417,6 +426,7 @@ window.onload = async function() {
 			chips.push(...tmp);
 		}
 		sel.remove();
+		clean = false;
 	}
 
 	root.addEventListener("keydown", e => {
@@ -439,11 +449,12 @@ window.onload = async function() {
 	window.addEventListener("resize", e => {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
+		clean = false
 	});
 
 	(async function updateanim(t) {
 
-
+		if(!clean) { 
 		ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 		for(const wire of connections) {
 			const points = [];
@@ -470,7 +481,8 @@ window.onload = async function() {
 				renderCurveBetweenPorts(...points);
 			}
 		}
-
+		clean = true;
+		}
 		requestAnimationFrame(updateanim);
 	})()
 
