@@ -1,16 +1,16 @@
 const isNested = Boolean(window.parent != window);
 
-const deprecationStrings = [
-	{Text: "", Class: "hide"},
-	{Text: "Warning! This chip is being deprecated. It will be broken in the near future, and should not be used.", Class: "depwarn"},
-	{Text: "Warning! This chip is currently deprecated. It is no longer in the palette, and likely does not work.", Class: "depbad"}
-];
+const deprecationStrings = {
+	"Active": {Text: "", Class: "hide"},
+	"": {Text: "Warning! This chip is being deprecated. It will be broken in the near future, and should not be used.", Class: "depwarn"},
+	"Deprecated": {Text: "Warning! This chip is currently deprecated. It is no longer in the palette, and likely does not work.", Class: "depbad"}
+};
 const fusenameopts = {
 	isCaseSensitive: false,
 	minMatchCharLength: 1,
 	ignoreLocation: true,
 	threshold: 0,
-	keys: ["ReadonlyName"],
+	keys: ["ReadonlyPaletteName", "ReadonlyChipName"],
 	includeScore: true
 };
 const fusedescopts = {
@@ -52,10 +52,12 @@ window.addEventListener("load", async (e) => {
 	const form = document.getElementById("form");
 	const suggestions = document.getElementById("paletteSearch");
 
+	if (isNested) document.getElementById("grapherlink").remove();
+
 	if (localStorage.length) {
 		form.depr.checked = localStorage.getItem("depr");
 		form.beta.checked = localStorage.getItem("beta");
-		form.ReadonlyName.checked = localStorage.getItem("ReadonlyName");
+		form.ReadonlyPaletteName.checked = localStorage.getItem("ReadonlyPaletteName");
 		form.Description.checked = localStorage.getItem("Description");
 		form.refresh.checked = localStorage.getItem("refresh");
 		form.fuzziness.value = localStorage.getItem("fuzz");
@@ -63,9 +65,9 @@ window.addEventListener("load", async (e) => {
 		form.filterSug.checked = localStorage.getItem("fsug");
 	}
 
-	let v2pr = fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"circuitsv2.json")
+	let v2pr = fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuitsv2.json")
 				   .then(res => res.json());
-	let termspr = fetch("./terms.json")
+	let termspr = fetch("/terms.json")
 									.then(res => res.json());
 
 	[v2json, termsjson] = await Promise.all([v2pr, termspr]);
@@ -75,7 +77,7 @@ window.addEventListener("load", async (e) => {
 	//GUID needs to be in the same object now, because we convert to an array
 	const searchable = Object.entries(v2json.Nodes)
 		.map(pair => {return {GUID: pair[0], ...pair[1]}})
-	searchable.sort((a, b) => (a.ReadonlyName.toLowerCase() > b.ReadonlyName.toLowerCase()) ? 1 : -1);
+	searchable.sort((a, b) => (a.ReadonlyPaletteName.toLowerCase() > b.ReadonlyPaletteName.toLowerCase()) ? 1 : -1);
 
 	const fuses = [new Fuse(searchable, fusenameopts),
 								 new Fuse(searchable, fusedescopts)];
@@ -102,7 +104,7 @@ window.addEventListener("load", async (e) => {
 
 		localStorage.setItem("depr", form.depr.checked ? "set" : "");
 		localStorage.setItem("beta", form.beta.checked ? "set" : "");
-		localStorage.setItem("ReadonlyName", form.ReadonlyName.checked ? "set" : "");
+		localStorage.setItem("ReadonlyPaletteName", form.ReadonlyPaletteName.checked ? "set" : "");
 		localStorage.setItem("Description", form.Description.checked ? "set" : "");
 		localStorage.setItem("refresh", form.refresh.checked ? "set" : "");
 		localStorage.setItem("fsug", form.filterSug.checked ? "set" : "");
@@ -161,7 +163,8 @@ window.addEventListener("load", async (e) => {
 				const iret = newEl("div", "infocontainer");
 
 				const name = document.createElement("summary");
-				name.innerText = el.ReadonlyName;
+				name.innerText = el.ReadonlyPaletteName +
+					((el.ReadonlyPaletteName == el.ReadonlyChipName) ? "" : ` - aka "${el.ReadonlyChipName}"`);
 
 				const deprinfo = deprecationStrings[el.DeprecationStage];
 				const depr = newEl("div", deprinfo.Class);
@@ -171,7 +174,7 @@ window.addEventListener("load", async (e) => {
 				desc.innerText = el.Description == "" ? "No Description!" : el.Description;
 
 				const filters = newEl("ul", "filters")
-				filters.append(...Object.values(el.NodeFilters).map(val => genSearchPath(val.FilterPath, el.ReadonlyName)));
+				filters.append(...Object.values(el.NodeFilters).map(val => genSearchPath(val.FilterPath, el.ReadonlyPaletteName)));
 
 				iret.append(desc, filters);
 

@@ -8,19 +8,19 @@
     <title>CV2 Node Graph Generator</title>
 		<link crossorigin href="/oi.css" rel="stylesheet" type="text/css">
     <link crossorigin href="style.css" rel="stylesheet" type="text/css" />
-    <link crossorigin href="/chips.css" rel="stylesheet" type="text/css" />
+    <link crossorigin href="/lib/chips.css" rel="stylesheet" type="text/css" />
 
-    <link crossorigin href="/util.js" rel="preload" as="script"/>
-    <link crossorigin href="/chips.js" rel="preload" as="script"/>
+    <link crossorigin href="/lib/util.js" rel="preload" as="script"/>
+    <link crossorigin href="/lib/chips.js" rel="preload" as="script"/>
     <link crossorigin href="script.js" rel="preload" as="script"/>
-    <link crossorigin href="oi.css" rel="preload" as="style"/>
-    <link crossorigin href="/chips.css" rel="preload" as="style"/>
+    <link crossorigin href="/oi.css" rel="preload" as="style"/>
+    <link crossorigin href="/lib/chips.css" rel="preload" as="style"/>
     <link crossorigin href="style.css" rel="preload" as="style"/>
     <link crossorigin href="/circuitsv2.json" rel="preload" as="fetch"/>
     <link crossorigin href="https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json" rel="preload" as="fetch"/>
 
-		<script crossorigin src="/util.js"></script>
-		<script crossorigin src="/chips.js"></script>
+		<script crossorigin src="/lib/util.js"></script>
+		<script crossorigin src="/lib/chips.js"></script>
 		<script crossorigin src="script.js"></script>
     <noscript><style> #searcher, #graph, #canvas { display: none } </style></noscript>
   </head>
@@ -34,7 +34,7 @@
 		</noscript>
 		<details id="searchbox" open>
 			<summary></summary>
-			<iframe id="searcher" src="/"></iframe>
+			<iframe id="searcher" src="/searcher"></iframe>
 		</details>
 		<div id="graph">
 
@@ -45,7 +45,7 @@
 			<div>
 				<h1>Permalinking Menu</h1>
 				<hr>
-				<p>Set your name below and click the button to get a permanent link to this graph.</p>
+				<p>Set your name below(optional) and click the button to get a permanent link to the current graph.</p>
 				<label for="authorbox"><b>Author:</b></label>
 				<input id="authorbox" type="text">
 				<br>
@@ -70,7 +70,7 @@
 				<hr/>
 				<p>The chip grapher is a simple program.
 					To get started, use the searcher sidebar to find a chip you want to add.
-					That sidebar is just an embedded version of the main searcher, and all
+					That sidebar is just an embedded version of <a href="/searcher">the main searcher</a>, and all
 					behavior is the same. To learn more, press the '?' button on the sidebar.
 					Once you've decided on a chip, press the '+' button next to it to add it
 					to the graph.</p>
