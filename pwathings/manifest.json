@@ -1,7 +1,7 @@
 {
 	"name": "Aleteoryx's Circuit Utilities",
-	"short_name": "CV2Utils",
-	"description": "A set of tools for understanding and working with Rec Room's circuits, formerly CV2.",
+	"short_name": "RRCUtils",
+	"description": "A set of tools for understanding and working with Rec Room's circuits.",
 	
 	"start_url": "/",
 	"display": "minimal-ui",
@@ -14,8 +14,8 @@
 			"url": "/searcher"
 		},
 		{
-			"name": "Chip Searcher",
-			"url": "/searcher"
+			"name": "Chip Grapher",
+			"url": "/grapher"
 		}
 	],
 

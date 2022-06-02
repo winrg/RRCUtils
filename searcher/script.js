@@ -65,7 +65,7 @@ window.addEventListener("load", async (e) => {
 		form.filterSug.checked = localStorage.getItem("fsug");
 	}
 
-	let v2pr = fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuitsv2.json")
+	let v2pr = fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuits.json")
 				   .then(res => res.json());
 	let termspr = fetch("/terms.json")
 									.then(res => res.json());

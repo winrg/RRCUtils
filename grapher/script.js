@@ -34,7 +34,7 @@ Serialization format:
 */
 
 
-var v2data;
+var rrcdata;
 var graph;
 var searcher;
 const rootel = document.documentElement;
@@ -137,7 +137,7 @@ function delConnections(el) {
 
 function newChip(GUID) {
 	const types = {};
-	const typeParams = v2data.Nodes[GUID].NodeDescs[0].ReadonlyTypeParams;
+	const typeParams = rrcdata.Nodes[GUID].NodeDescs[0].ReadonlyTypeParams;
 	for (const desc of Object.keys(typeParams))
 		types[desc] = [
 			`${desc}: ${typeParams[desc]}`,
@@ -146,7 +146,7 @@ function newChip(GUID) {
 			
 	const ne = newEl('div', 'chipbox');
 	const chipcontainer = newEl('div', 'selUI');
-	chipcontainer.append(generateChipHTML(v2data.Nodes[GUID].NodeDescs));
+	chipcontainer.append(generateChipHTML(rrcdata.Nodes[GUID].NodeDescs));
 	ne.append(chipcontainer);
 	graph.append(ne);
 	
@@ -159,7 +159,7 @@ function newChip(GUID) {
 		el: ne,
 		typeInfo: types,
 		currentOverrides: {},
-		nd: v2data.Nodes[GUID].NodeDescs,
+		nd: rrcdata.Nodes[GUID].NodeDescs,
 		GUID: GUID,
 	};
 	
@@ -287,17 +287,17 @@ async function getPermalink() {
 	}).then(m => m.text())
 	console.log(ret);
 	linkerp.innerText = "Success! Permalinked at:"
-	linker.href      = `https://cv2.aleteoryx.me/grapher/pl#${ret}`
-	linker.innerText = `https://cv2.aleteoryx.me/grapher/pl#${ret}`
+	linker.href      = `https://circuits.aleteoryx.me/grapher/pl#${ret}`
+	linker.innerText = `https://circuits.aleteoryx.me/grapher/pl#${ret}`
 }
 
 window.onload = async function() {
 	graph = document.getElementById("graph");
 	searcher = document.getElementById("searcher");
-	v2data = await fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuitsv2.json")
+	rrcdata = await fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuits.json")
 				   .then(res => res.json());
 
-	allTypes.push(...ListAllTypes(v2data.Nodes).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1));
+	allTypes.push(...ListAllTypes(rrcdata.Nodes).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1));
 
 	window.onmessage = function({data}) {
 		clean = false

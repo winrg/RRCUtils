@@ -41,8 +41,8 @@ async function reload() {
 	}
 }
 
-async function recursiveLinkWalker(url, cache, visits=[], constrain=["cv2.aleteoryx.me"]) {
-	const urlobj = new URL(url, "https://cv2.aleteoryx.me");
+async function recursiveLinkWalker(url, cache, visits=[], constrain=["circuits.aleteoryx.me"]) {
+	const urlobj = new URL(url, "https://circuits.aleteoryx.me");
 	console.dir(urlobj, String(urlobj));
 	if (!constrain.includes(urlobj.hostname) || visits.includes(url))
 		return;
