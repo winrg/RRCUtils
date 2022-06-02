@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Document</title>
+
+	<script src="/lib/types.js" ></script>
+
+	<script>
+		console.log(new Type("int"))
+		console.log(new Type("List<int>"))
+		console.log(new Type("(int, T1)", ["T1"]))
+		console.log(new Type("List<(T,int)>", ["T"]))
+		console.log(new Type("(int|float|Vector3)"))
+		console.log(new Type("List<(int|float|Vector3)>"))
+		console.log(new Type("(List<List<(int|float|Vector3)>>|List<any>)"))
+		
+	</script>
+		
+</head>
+<body>
+	
+</body>
+</html>

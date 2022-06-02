@@ -1,23 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Placeholder</title>
-	<link rel="manifest" href="/pwathings/manifest.json" />
-	<link rel="manifest" href="/pwathings/manifest.json" />
-	<script>
-		var reg;
-	  window.addEventListener("load", async function() {
-			reg = await navigator.serviceWorker.getRegistrations();
-			if (reg.length) document.getElementById("enabler").innerText = "Click to refresh the Service Worker!";
-		});
-		const reloader = () => Promise.all(reg.map(r => r.unregister())).then(() => navigator.serviceWorker.register('/worker.js', {scope: '/'}));
-	</script>
-</head>
-<body>
-	<ul>
-		<li><a href="/searcher">Chip Searcher</a></li>
-		<li><a href="/grapher">Chip Grapher</a></li>
-		<li><button id="enabler" onclick="reloader();">Click to enable offline use!</button></li>
-	</ul>
-</body>
+	<head>
+ 		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="A set of tools for working with Rec Room Circuits.">
+		<meta name="author" content="recnet/winrg">
+		<title>Aleteoryx's CV2Utils</title>
+		<link rel="manifest" href="/pwathings/manifest.json" />
+		<link rel="manifest" href="/pwathings/manifest.json" />
+
+		<link rel="stylesheet" href="style.css" />
+		<script>
+			var reg;
+		  window.addEventListener("load", async function() {
+				reg = await navigator.serviceWorker.getRegistrations();
+				if (reg.length) document.getElementById("enabler").innerText = "Click to refresh the Service Worker!";
+			});
+			const reloader = () => Promise.all(reg.map(r => r.unregister())).then(() => navigator.serviceWorker.register('/worker.js', {scope: '/'}));
+		</script>
+	</head>
+	<body>
+		<div id="logo"><img src="/pwathings/icons/400x.png" alt="logo"/></div>
+		<h1>Welcome to CV2Utils!</h1>
+		<p>
+			This is a little project of mine.
+			Below you'll find a collection of tools for understanding and explaining CV2, as well as playing with it out-of-game.
+			This site is in a perpetual state of work-in-progress, but there's a changelog below, too.
+		</p>
+		<ul>
+			<li><a href="/searcher">Chip Searcher</a></li>
+			<li><a href="/grapher">Chip Grapher</a></li>
+			<li><button id="enabler" onclick="reloader();">Click to enable offline use!</button></li>
+		</ul>
+		<section id="changelog">
+			<article>
+				<h1>June 6, 2022 - The Three Clicks Edition</h1>
+				<hr/>
+				<ul>
+					<li>Built a proper homepage.</li>
+					<ul>
+						<li>Revamped the install code.</li>
+						<li>Added Changelog</li>
+					</ul>
+					<li>Continued work on type inference logic.</li>
+					<ul>
+						<li>You can view it at <a href="/types.html">types.html</a>, by opening the DevTools console.</li>
+						<li>The actual logic is contained in <code>/lib/types.js</code>.</li>
+					</ul>
+				</ul>
+			</article>
+		</section>
+	</body>
 </html>
