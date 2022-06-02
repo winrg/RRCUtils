@@ -34,7 +34,7 @@ Serialization format:
 */
 
 
-var rrcdata;
+var r2cdata;
 var graph;
 var searcher;
 const rootel = document.documentElement;
@@ -137,7 +137,7 @@ function delConnections(el) {
 
 function newChip(GUID) {
 	const types = {};
-	const typeParams = rrcdata.Nodes[GUID].NodeDescs[0].ReadonlyTypeParams;
+	const typeParams = r2cdata.Nodes[GUID].NodeDescs[0].ReadonlyTypeParams;
 	for (const desc of Object.keys(typeParams))
 		types[desc] = [
 			`${desc}: ${typeParams[desc]}`,
@@ -146,7 +146,7 @@ function newChip(GUID) {
 			
 	const ne = newEl('div', 'chipbox');
 	const chipcontainer = newEl('div', 'selUI');
-	chipcontainer.append(generateChipHTML(rrcdata.Nodes[GUID].NodeDescs));
+	chipcontainer.append(generateChipHTML(r2cdata.Nodes[GUID].NodeDescs));
 	ne.append(chipcontainer);
 	graph.append(ne);
 	
@@ -159,7 +159,7 @@ function newChip(GUID) {
 		el: ne,
 		typeInfo: types,
 		currentOverrides: {},
-		nd: rrcdata.Nodes[GUID].NodeDescs,
+		nd: r2cdata.Nodes[GUID].NodeDescs,
 		GUID: GUID,
 	};
 	
@@ -294,10 +294,10 @@ async function getPermalink() {
 window.onload = async function() {
 	graph = document.getElementById("graph");
 	searcher = document.getElementById("searcher");
-	rrcdata = await fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuits.json")
+	r2cdata = await fetch(/*"https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"/*/"/circuits.json")
 				   .then(res => res.json());
 
-	allTypes.push(...ListAllTypes(rrcdata.Nodes).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1));
+	allTypes.push(...ListAllTypes(r2cdata.Nodes).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1));
 
 	window.onmessage = function({data}) {
 		clean = false

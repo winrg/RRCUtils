@@ -1,6 +1,6 @@
 {
 	"name": "Aleteoryx's Circuit Utilities",
-	"short_name": "RRCUtils",
+	"short_name": "R2CUtils",
 	"description": "A set of tools for understanding and working with Rec Room's circuits.",
 	
 	"start_url": "/",
