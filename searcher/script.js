@@ -52,7 +52,7 @@ window.addEventListener("load", async (e) => {
 	const form = document.getElementById("form");
 	const suggestions = document.getElementById("paletteSearch");
 
-	if (isNested) document.getElementById("grapherlink").remove();
+	//if (isNested) document.getElementById("grapherlink").remove();
 
 	if (localStorage.length) {
 		form.depr.checked = localStorage.getItem("depr");
@@ -156,7 +156,7 @@ window.addEventListener("load", async (e) => {
 		//console.log(content2.nodes)
 			
 		content = content.map(el => {
-			if ((form.depr.checked || el.DeprecationStage == 0) && (form.beta.checked || !el.IsBetaChip)) {
+			if ((form.depr.checked || el.DeprecationStage == "Active") && (form.beta.checked || !el.IsBetaChip)) {
 				const ret = newEl("details", "returnedchip");
 				if (el.IsBetaChip) ret.classList.add("betaChip");
 

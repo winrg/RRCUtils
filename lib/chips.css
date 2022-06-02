@@ -152,6 +152,7 @@ body {
 	z-index: 99;
 	top: calc(var(--mouse-y) + 10px - (var(--chipOffsetY) * 1px));
 	left: calc(var(--mouse-x) + 10px - (var(--chipOffsetX) * 1px));
+	user-select: none;
 }
 
 .input > .exec::before,
