@@ -16,6 +16,6 @@ jobs:
       - name: Update the danged JSON
         run: |
           cd $GITHUB_WORKSPACE
-          rm circuitsv2.json
-          curl -O "https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"
+          rm circuits.json
+          curl -o circuits.json "https://raw.githubusercontent.com/tyleo-rec/CircuitsV2Resources/master/misc/circuitsv2.json"
           git push
