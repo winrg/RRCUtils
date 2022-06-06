@@ -56,6 +56,7 @@ var mode;
 var targ;
 var start;
 var wirestate;
+var maintouch;
 const lastmp = {x:0,y:0};
 
 const graphPos = {x:0,y:0};
@@ -315,9 +316,7 @@ window.onload = async function() {
 
 	}
 
-	graph.addEventListener('mousedown', function(e) {
-		if ((e.buttons & 1) && !locked) {
-			start = performance.now();
+	function clickToWire(e) {start = performance.now();
 			targ = e.target;
 			if (e.target.parentElement.matches('.input')) {
 				if (!e.target.matches('.exec')) delConnections(e.target);
@@ -349,11 +348,21 @@ window.onload = async function() {
 
 			else if (e.target == graph) switchID(null, 'selected')
 			clean = false
+	}
+	
+	graph.addEventListener('mousedown', function(e) {
+		if ((e.buttons & 1) && !locked) {
+			clickToWire(e);
+		}
+	});
+	graph.addEventListener('touchstart', function(e) {
+		if (e.touches.length <= 1) {
+			maintouch = e.changedTouches[0];
+			clickToWire(e);
 		}
 	});
 
-	rootel.addEventListener("mouseup", e => {
-		if ((e.button == 0) && !locked) {
+	function unclickToWire(e) {
 			let newCon;
 			switch (mode) {
 			case 'wire_i-o':
@@ -371,13 +380,23 @@ window.onload = async function() {
 					connections.push(newCon);
 				break;
 			case 'drag':
-				if ((performance.now() - start) < 150 && !targ.querySelector('.selUI').matches('#selected')) {
+				if ((performance.now() - start) < 300 && !targ.querySelector('.selUI').matches('#selected')) {
 					switchID(targ.children[0], 'selected')
 				}
 				break;
 			}
 			mode = null;
-			clean = false
+			clean = false;
+	}
+	rootel.addEventListener("mouseup", e => {
+		if ((e.button == 0) && !locked) {
+			unclickToWire(e);
+		}
+	});
+	graph.addEventListener('touchend', e => {
+		if (e.changedTouches[0] == maintouch) {
+			maintouch = null;
+			unclickToWire(e);
 		}
 	});
 
@@ -409,6 +428,10 @@ window.onload = async function() {
 		if (mode) 
 			clean = false
 	});
+	rootel.addEventListener('touchdrag', e => {
+		lastmp.x = e.changedTouches[0].clientX;
+		lastmp.y = e.changedTouches[0].clientY;
+	})
 
 
 	root.addEventListener("mousemove", e => {

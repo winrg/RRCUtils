@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://circuits.aleteoryx.me/oi.css');
 
 html {
 	--foreforeground: #3788ae;
@@ -20,6 +21,7 @@ html {
 }
 body > * {
 	width: max(60vw, 8cm);
+	--body-width: max(60vw, 8cm);
 }
 
 hr {
@@ -138,5 +140,66 @@ section#changelog > article {
 	}
 	100% {
 		box-shadow: 0mm 0mm 1cm white, 0mm 0mm 0mm white;
+	}
+}
+
+ul.links > li::marker {
+	font-family: "Icons";
+	font-size: 2.5mm;
+	content: "\e064   ";
+}
+
+#projects {
+	display: grid;
+	box-shadow: inset 0mm 0mm 5mm black;
+	padding: 1cm;
+	background: #020d12;
+	grid-gap: 1cm;
+	justify-content: center;
+}
+
+#projects > a {
+	border: solid white 1mm;
+	padding: 0;
+	background-size: cover;
+	background-position: center center;
+	overflow: hidden;
+	box-shadow: inset 0 0 3mm black , 0 0 3mm black;
+	position: relative;
+	color: white;
+}
+
+#projects > a * {
+	margin: 0mm;
+}
+#projects > a > div {
+	background-color: #0008;
+	backdrop-filter: blur(5px);
+	width: 100%;
+	margin: 0;
+	padding: 0.5cm;
+	position: absolute;
+	bottom: 0;
+}
+
+@media (orientation:portrait) {
+	#projects {
+		grid-template-columns: 100%;
+		grid-auto-rows: var(--body-width);
+	}
+	#projects > a {
+		display: block;
+		min-height: var(--body-width);
+	}
+}
+
+@media (orientation:landscape) {
+	#projects {
+		--widhei: calc(var(--body-width) / 2 - 2cm);
+		grid-template-columns: var(--widhei) var(--widhei);
+	}
+	#projects > a {
+		display: block;
+		height: calc(var(--widhei) - 2cm);
 	}
 }

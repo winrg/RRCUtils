@@ -26,12 +26,46 @@
 			Below you'll find a collection of tools for understanding and explaining R2C, as well as playing with it out-of-game.
 			This site is in a perpetual state of work-in-progress, but there's a changelog below, too.
 		</p>
-		<ul>
-			<li><a href="/searcher">Chip Searcher</a></li>
-			<li><a href="/grapher">Chip Grapher</a></li>
-			<li><button id="enabler" onclick="reloader();">Click to enable offline use!</button></li>
-		</ul>
+		<section id="projects">
+			<a href="/searcher" style="background-image: url(/images/searcher.png);">
+				<div>
+					<h3>Chip Searcher</h3>
+					<p></p>
+				</div>
+			</a>
+			<a href="/grapher" style="background-image: url(/images/grapher.png);">
+				<div>
+					<h3>Chip Grapher</h3>
+					<p></p>
+				</div>
+			</a>
+		</section>
+		<button id="enabler" onclick="reloader();">Click to enable offline use!</button>
 		<section id="changelog">
+			<article>
+				<h1>June 6, 2022 - Just the same as you and me!</h1>
+				<hr>
+				<ul>
+					<li>Created a nicer display for the links, with neat frosted glass effeects.</li>
+				</ul>
+			</article>
+			<article>
+				<h1>June 3, 2022 - The Three Clicks Edition</h1>
+				<hr>
+				<ul>
+					<li>Continued work on type inference logic.</li>
+					<ul>
+						<li>There is now something that can parse in R2C types,
+							as well as plenty of methods for computing intersections between them.</li>
+						<li><b>As Always:</b></li>
+						<ul>
+							<li>You can view it at <a href="/types.html">types.html</a>, by opening the DevTools console.</li>
+							<li>The actual logic is contained in <code>/lib/types.js</code>.</li>
+						</ul>
+					</ul>
+					<li>The links at the bottom of the homepage now use funny icons for the ::marker bit!</li>
+				</ul>
+			</article>
 			<article>
 				<h1>June 2, 2022 - The Three Clicks Edition</h1>
 				<hr/>
@@ -61,9 +95,9 @@
 		<h2>Credits:</h2>
 		<p>Though I've tried to keep as much of this codebase my own as possible,
 			R2CUtils depends on the following projects:</p>
-		<ul>
-			<li><a href="https://usiconic.com/open">Open Iconic - Various Icons</a></li>
-			<li><a href="https://fusejs.io">fuse.js - Searching through the JSON</a></li>
+		<ul class="links">
+			<li><a href="https://useiconic.com/open" target="_blank">Open Iconic - Various Icons</a></li>
+			<li><a href="https://fusejs.io" target="_blank">fuse.js - Searching through the JSON</a></li>
 		</ul>
 	</body>
 </html>
