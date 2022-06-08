@@ -179,7 +179,8 @@ ul.links > li::marker {
 	margin: 0;
 	padding: 0.5cm;
 	position: absolute;
-	bottom: 0;
+	bottom: -1px;
+	z-index: 100;
 }
 
 @media (orientation:portrait) {
@@ -202,4 +203,10 @@ ul.links > li::marker {
 		display: block;
 		height: calc(var(--widhei) - 2cm);
 	}
+}
+
+code {
+	background: #041720;
+	padding: 0.5mm;
+	border-radius: 0.5mm;
 }
